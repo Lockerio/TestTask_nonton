@@ -19,6 +19,11 @@ namespace TestTask_nonton.Model
         private string _name;
 
         /// <summary>
+        /// Пустой конструктор класса Product, создает экземпляр этого класса
+        /// </summary>
+        public Product() { }
+
+        /// <summary>
         /// Конструктор класса Product, создает экземпляр этого класса
         /// </summary>
         /// <param name="id">Id продукта</param>
@@ -35,7 +40,7 @@ namespace TestTask_nonton.Model
         public string Id
         {
             get { return _id; }
-            set { _id = AssertString(value, 15); }
+            set { _id = AssertString(value, 15, nameof(Id)); }
         }
 
         /// <summary>
@@ -44,7 +49,7 @@ namespace TestTask_nonton.Model
         public string Name
         {
             get { return _name; }
-            set { _name = AssertString(value, 50); }
+            set { _name = AssertString(value, 50, nameof(Name)); }
         }
 
         /// <summary>
@@ -56,16 +61,16 @@ namespace TestTask_nonton.Model
         /// <exception cref="ArgumentException">
         /// Исключение, генерируемое при нулевой строке, или при выходе за ограничение символов
         /// </exception>
-        private string AssertString(string incomingStr, int maxLength)
+        private string AssertString(string incomingStr, int maxLength, string fieldName)
         {
             if ((incomingStr == null) || (incomingStr == ""))
             {
-                string messege = "Ваша строка пустая.";
+                string messege = fieldName + ": Вы ввели пустую строку";
                 throw new ArgumentException(messege);
             }
             else if (incomingStr.Length > maxLength)
             {
-                string messege = incomingStr + ": Вы превысили лимит в " + maxLength + " символов.";
+                string messege = fieldName + ": Вы превысили лимит в " + maxLength + " символов.";
                 throw new ArgumentException(messege);
             }
             return incomingStr;
