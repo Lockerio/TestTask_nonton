@@ -10,9 +10,8 @@ namespace TestTask_nonton.Model
     /// <summary>
     /// Описывает объект для работы с классом Product
     /// </summary>
-    internal class ProductsImpl
+    public class ProductsImpl
     {
-
         /// <summary>
         /// Список продуктов
         /// </summary>
