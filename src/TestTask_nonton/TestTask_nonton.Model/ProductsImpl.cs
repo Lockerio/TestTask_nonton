@@ -74,22 +74,38 @@ namespace TestTask_nonton.Model
             return false;
         }
 
-
-        //Получает имя (name) продукта
-        // возращает name продукта у которого идентификатор равен (=) id
-        // если продукта нет, вернуть пустую строку ""
-        public string GetName(String id)
+        /// <summary>
+        /// Получает имя (name) продукта
+        /// </summary>
+        /// <param name="id">Id искомого продукта</param>
+        /// <returns>
+        /// Возращает name продукта, у которого идентификатор равен (=) id.
+        /// Если продукта нет, вернуть пустую строку "".
+        /// </returns>
+        public string GetName(string incomingId)
         {
-            // реализация
+            Product product = Products.FirstOrDefault(p => p.Id == incomingId);
+
+            if (product == null) 
+            {
+                return "";
+            }
+            return product.Name;
         }
 
-
-        //возвращает массив (список) идентификаторов (id)
-        // У котрых наименование равно (=) name
-        // Если таких нет, возвращается пустой массив (список)
-        public List<Product> FindByName(String name)
+        /// <summary>
+        /// Поиск по названию
+        /// </summary>
+        /// <param name="incomingName">Название, по которому будет производится поиск</param>
+        /// <returns>
+        /// Возвращает массив (список) идентификаторов (id),
+        /// у котрых наименование равно (=) name.
+        /// Если таких нет, возвращается пустой массив (список).
+        /// </returns>
+        public List<Product> FindByName(string incomingName)
         {
-            //реализация
+            var nameToSearch = incomingName.ToLower();
+            return Products.Where(product => product.Name.ToLower().Equals(nameToSearch)).ToList();
         }
     }
 }
