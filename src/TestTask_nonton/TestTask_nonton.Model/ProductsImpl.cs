@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,29 +38,47 @@ namespace TestTask_nonton.Model
             }
         }
 
-
-
-        //добавляет новый продукт
-        // возвращает true - если продукта с таким id еще не было
-        // возвращает false - если был такой id, вставка отменяется
-        public bool addProduct(Product product)
+        /// <summary>
+        /// Добавляет новый продукт
+        /// </summary>
+        /// <param name="incomingProduct">Входящий продукт</param>
+        /// <returns>
+        /// Возвращает true - если продукта с таким id еще не было
+        /// Возвращает false - если был такой id, вставка отменяется
+        /// </returns>        
+        public bool AddProduct(Product incomingProduct)
         {
-            //реализация
+            if (Products.Any(product => product.Id.ToLower() == incomingProduct.Id.ToLower()))
+            {
+                return false;
+            }
+            Products.Add(incomingProduct);
+            return true;
         }
 
-        //Удаляет продукт
-        // возвращает true - если продукт с таким id был
-        // возвроащает false - если id не было, (удаления не происходит)
-        public bool deleteProduct(Product product)
+        /// <summary>
+        /// Удаляет продукт
+        /// </summary>
+        /// <param name="incomingProduct">Входящий продукт</param>
+        /// <returns>
+        /// Возвращает true - если продукт с таким id был
+        /// Возвроащает false - если id не было, (удаления не происходит)
+        /// </returns>
+        public bool DeleteProduct(Product incomingProduct)
         {
-            // реализация
+            if (Products.Any(product => product.Id.ToLower() == incomingProduct.Id.ToLower()))
+            {
+                Products.Remove(incomingProduct);
+                return true;
+            }
+            return false;
         }
 
 
         //Получает имя (name) продукта
         // возращает name продукта у которого идентификатор равен (=) id
         // если продукта нет, вернуть пустую строку ""
-        public string getName(String id)
+        public string GetName(String id)
         {
             // реализация
         }
@@ -68,7 +87,7 @@ namespace TestTask_nonton.Model
         //возвращает массив (список) идентификаторов (id)
         // У котрых наименование равно (=) name
         // Если таких нет, возвращается пустой массив (список)
-        public List<Product> findByName(String name)
+        public List<Product> FindByName(String name)
         {
             //реализация
         }
