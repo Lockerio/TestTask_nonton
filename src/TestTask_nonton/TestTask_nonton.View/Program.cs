@@ -17,6 +17,33 @@ void PrintProducts()
     }
 }
 
+Product CreateProduct()
+{
+    Product newProduct = new Product();
+
+    while (true)
+    {
+        Console.WriteLine("\nВведите id продукта: ");
+        string incomingId = Console.ReadLine();
+
+        Console.WriteLine("Введите название продукта: ");
+        string incomingName = Console.ReadLine();
+
+        try
+        {
+            newProduct = new Product(incomingId, incomingName);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("\nОшибка! " + e.Message + " Попробуйте еще раз.\n\n");
+        }
+        break;
+    }
+    return newProduct;
+}
+
+
+
 
 Console.WriteLine(
     "Доброго времени суток!\n\n" +
@@ -47,50 +74,49 @@ while (true)
 
     switch (userInput)
     {
+        // Добавить продукт
         case "1":
-            while (true)
+            bool is_product_added = productsImpl.AddProduct(CreateProduct());
+
+            if (is_product_added)
             {
-                Console.WriteLine("\nВведите id продукта: ");
-                string incomingId = Console.ReadLine();
-
-                Console.WriteLine("Введите название продукта: ");
-                string incomingName = Console.ReadLine();
-
-                Product newProduct = new Product();
-
-                try
-                {
-                    newProduct = new Product(incomingId, incomingName);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("\nОшибка! " + e.Message + " Попробуйте еще раз.\n\n");
-                }
-
-                bool is_product_added = productsImpl.AddProduct(newProduct);
-
-                if (is_product_added)
-                {
-                    Console.WriteLine("Продукт успешно добавлен");
-                }
-                else
-                {
-                    Console.WriteLine("Продукт с таким id уже существует");
-                }
-                break;
+                Console.WriteLine("Продукт успешно добавлен");
+            }
+            else
+            {
+                Console.WriteLine("Продукт с таким id уже существует");
             }
             break;
+
+        // Удалить продукт
         case "2":
+            bool is_product_deleted = productsImpl.DeleteProduct(CreateProduct());
+
+            if (is_product_deleted)
+            {
+                Console.WriteLine("Продукт успешно удален");
+            }
+            else
+            {
+                Console.WriteLine("Продукт с таким id не существует");
+            }
             break;
+
+        // Искать по id
         case "3":
             break;
+
+        // Искать по названию
         case "4":
             break;
+
+        // Выход
         case "5":
-            break;
-        default:
             Console.WriteLine("До встречи!");
             Environment.Exit(0);
+            break;
+        default:
+            Console.WriteLine("Вы ввели что-то непонятное!");
             break;
     }
 }
