@@ -2,48 +2,22 @@
 using TestTask_nonton.Model;
 
 
-
 ProductsImpl productsImpl = new ProductsImpl();
 
-
-void PrintProducts()
+void PrintProducts(List<Product> products)
 {
-    int counter = 1;
-    Console.WriteLine("\nСписок продуктов");
-
-    foreach (Product product in productsImpl.Products)
+    if (products.Count == 0)
     {
-        Console.WriteLine(counter + ") Id: " + product.Id + "Name: " + product.Name);
+        Console.WriteLine("Список продуктов пуст!");
+    }
+    else
+    {
+        foreach (Product product in products)
+        {
+            Console.WriteLine("* Id: " + product.Id + "; Name: " + product.Name);
+        }
     }
 }
-
-Product CreateProduct()
-{
-    Product newProduct = new Product();
-
-    while (true)
-    {
-        Console.WriteLine("\nВведите id продукта: ");
-        string incomingId = Console.ReadLine();
-
-        Console.WriteLine("Введите название продукта: ");
-        string incomingName = Console.ReadLine();
-
-        try
-        {
-            newProduct = new Product(incomingId, incomingName);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine("\nОшибка! " + e.Message + " Попробуйте еще раз.\n\n");
-        }
-        break;
-    }
-    return newProduct;
-}
-
-
-
 
 Console.WriteLine(
     "Доброго времени суток!\n\n" +
@@ -59,10 +33,11 @@ Console.WriteLine(
 
 while (true)
 {
-    PrintProducts();
+    Console.WriteLine("\nСписок всех продуктов:");
+    PrintProducts(productsImpl.Products);
 
     Console.WriteLine(
-        "Что вы хотите сделать?\n" +
+        "\nЧто вы хотите сделать?\n" +
         "1) Добавить продукт\n" +
         "2) Удалить продукт\n" +
         "3) Искать по id\n" +
@@ -76,7 +51,29 @@ while (true)
     {
         // Добавить продукт
         case "1":
-            bool is_product_added = productsImpl.AddProduct(CreateProduct());
+            Product newProduct = new Product();
+
+            while (true)
+            {
+                Console.WriteLine("\nВведите id продукта: ");
+                string idToAdd = Console.ReadLine();
+
+                Console.WriteLine("Введите название продукта: ");
+                string nameToAdd = Console.ReadLine();
+
+                try
+                {
+                    newProduct = new Product(idToAdd, nameToAdd);
+                    break;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("\nОшибка! " + e.Message + " Попробуйте еще раз.\n\n");
+                }
+                
+            }
+
+            bool is_product_added = productsImpl.AddProduct(newProduct);
 
             if (is_product_added)
             {
@@ -90,7 +87,10 @@ while (true)
 
         // Удалить продукт
         case "2":
-            bool is_product_deleted = productsImpl.DeleteProduct(CreateProduct());
+            Console.WriteLine("\nВведите id продукта: ");
+            string idToDelete = Console.ReadLine();
+
+            bool is_product_deleted = productsImpl.DeleteProduct(idToDelete);
 
             if (is_product_deleted)
             {
@@ -104,10 +104,23 @@ while (true)
 
         // Искать по id
         case "3":
+            Console.WriteLine("\nВведите id продукта: ");
+            string idToSearch = Console.ReadLine();
+
+            string productName = productsImpl.GetName(idToSearch);
+
+            Console.WriteLine("Название искомого продукта: " + productName);
             break;
 
         // Искать по названию
         case "4":
+            Console.WriteLine("\nВведите название продукта: ");
+            string nameToSearch = Console.ReadLine();
+
+            List<Product> products = productsImpl.FindByName(nameToSearch);
+
+            Console.WriteLine("\nСписок продуктов с названием: " + nameToSearch);
+            PrintProducts(products);
             break;
 
         // Выход
@@ -115,8 +128,10 @@ while (true)
             Console.WriteLine("До встречи!");
             Environment.Exit(0);
             break;
+
+        // Ввод некорректного значения
         default:
-            Console.WriteLine("Вы ввели что-то непонятное!");
+            Console.WriteLine("Вы ввели некорректое значение!");
             break;
     }
 }

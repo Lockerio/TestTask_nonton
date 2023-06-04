@@ -58,19 +58,21 @@ namespace TestTask_nonton.Model
         /// <summary>
         /// Удаляет продукт
         /// </summary>
-        /// <param name="incomingProduct">Входящий продукт</param>
+        /// <param name="incomingId">Id продукта</param>
         /// <returns>
-        /// Возвращает true - если продукт с таким id был
-        /// Возвроащает false - если id не было, (удаления не происходит)
+        /// Возвращает true - если продукт с таким id был.
+        /// Возвроащает false - если id не было, (удаления не происходит).
         /// </returns>
-        public bool DeleteProduct(Product incomingProduct)
+        public bool DeleteProduct(string incomingId)
         {
-            if (Products.Any(product => product.Id.ToLower() == incomingProduct.Id.ToLower()))
+            Product product = Products.FirstOrDefault(p => p.Id == incomingId);
+
+            if (product == null)
             {
-                Products.Remove(incomingProduct);
-                return true;
+                return false;
             }
-            return false;
+            Products.Remove(product);
+            return true;
         }
 
         /// <summary>
